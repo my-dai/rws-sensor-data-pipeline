@@ -12,8 +12,13 @@ data.
 
 ## What it shows
 
-- A shared schema for weather, soil, UV, radon, and Geiger-counter readings
+- A shared schema for temperature, pressure, humidity, gas, wind speed and
+  direction, rainfall, soil temperature and moisture, UV, radon, and Geiger CPM
 - Unit normalization and range validation at the acquisition boundary
+- Hardware-neutral GPIO pulse acquisition for Geiger, rain-gauge, and
+  anemometer inputs
+- BLE payload decoding for RadonEye-style radon measurements
+- Multi-channel adapters for environmental, weather, and soil instruments
 - A fault-tolerant collection cycle that preserves valid channels when one
   sensor fails
 - Transactional SQLite storage and deterministic CSV export
@@ -31,9 +36,11 @@ library.
 
 ## Project context
 
-The original lab system integrated Raspberry Pi GPIO, BLE, HTTP APIs, local and
-cloud storage, and environmental and radiation sensors. This repository is an
-independent portfolio implementation of the software architecture and data
-logic. It contains no lab credentials, private repositories, hardware data, or
-proprietary deployment configuration.
+The original lab system integrated Raspberry Pi GPIO interrupts, BLE, HTTP APIs,
+local and cloud storage, and environmental and radiation instruments. This
+repository is an independent portfolio implementation of the software
+architecture and data logic I worked on. Device-specific drivers are isolated
+behind small adapters so the acquisition, validation, persistence, and export
+layers can be tested without the lab hardware. It contains no lab credentials,
+private source code, research data, or deployment configuration.
 

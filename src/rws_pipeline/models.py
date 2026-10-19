@@ -9,6 +9,7 @@ CHANNELS: dict[str, tuple[str, float | None, float | None]] = {
     "temperature_c": ("C", -80.0, 80.0),
     "pressure_hpa": ("hPa", 250.0, 1_200.0),
     "humidity_pct": ("%", 0.0, 100.0),
+    "gas_resistance_ohm": ("ohm", 0.0, None),
     "wind_speed_mps": ("m/s", 0.0, 100.0),
     "wind_direction_deg": ("deg", 0.0, 360.0),
     "rainfall_mm": ("mm", 0.0, None),

@@ -1,7 +1,15 @@
 from pathlib import Path
+import struct
 import tempfile
 import unittest
 
+from rws_pipeline.adapters import (
+    ENVIRONMENT_CHANNELS,
+    GPIOPulseSensor,
+    MappedSensor,
+    PulseChannel,
+    RadonBleSensor,
+)
 from rws_pipeline.models import SensorSample, normalize
 from rws_pipeline.pipeline import CollectionPipeline
 from rws_pipeline.storage import SQLiteReadingStore
@@ -57,6 +65,33 @@ class PipelineTests(unittest.TestCase):
             content = csv_path.read_text(encoding="utf-8")
             self.assertIn("temperature_c", content)
             self.assertIn("station-1", content)
+
+    def test_gpio_pulse_counter_supports_geiger_cpm(self):
+        channel = PulseChannel("geiger_cpm", "CPM", "Geiger GPIO", 1.0)
+        sensor = GPIOPulseSensor("geiger", lambda: (42, 30.0), channel)
+        sample = list(sensor.read())[0]
+        self.assertEqual(sample.value, 84.0)
+
+    def test_radon_ble_payload_is_converted_to_si_units(self):
+        sensor = RadonBleSensor(lambda: struct.pack("<f", 2.5))
+        sample = list(sensor.read())[0]
+        self.assertEqual(sample.channel, "radon_bq_m3")
+        self.assertAlmostEqual(sample.value, 92.5)
+
+    def test_multi_channel_sensor_mapping(self):
+        sensor = MappedSensor(
+            "environment_board",
+            lambda: {
+                "temperature": 22.4,
+                "pressure": 1008.2,
+                "humidity": 41.0,
+                "gas": 12500.0,
+            },
+            ENVIRONMENT_CHANNELS,
+        )
+        reading = CollectionPipeline("station-1", [sensor]).collect()
+        self.assertEqual(reading.values["temperature_c"], 22.4)
+        self.assertEqual(reading.values["gas_resistance_ohm"], 12500.0)
 
 
 if __name__ == "__main__":
