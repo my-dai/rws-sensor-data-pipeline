@@ -5,8 +5,9 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "rws-sensor-data-pipeline"
 version = "0.1.0"
-description = "Synthetic Raspberry Pi sensor acquisition, normalization, and storage demo"
+description = "Raspberry Pi sensor acquisition, normalization, SQLite storage, and CSV export"
 requires-python = ">=3.11"
+license = "MIT"
 
 [tool.setuptools.packages.find]
 where = ["src"]
