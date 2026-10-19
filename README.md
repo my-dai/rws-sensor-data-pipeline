@@ -1,5 +1,7 @@
 # Radiation Weather Station Data Pipeline
 
+[![Test](https://github.com/my-dai/rws-sensor-data-pipeline/actions/workflows/test.yml/badge.svg)](https://github.com/my-dai/rws-sensor-data-pipeline/actions/workflows/test.yml)
+
 A hardware-independent version of the data pipeline I developed for a Raspberry
 Pi radiation and weather station at the University of Michigan Radiological
 Health Engineering Lab.
